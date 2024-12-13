@@ -1,17 +1,20 @@
+import { SignedIn } from '@clerk/nextjs'
+import { currentUser } from '@clerk/nextjs/server'
+import { ConvexHttpClient } from 'convex/browser'
 import { Blocks, Code2, Sparkles } from 'lucide-react'
 import Link from 'next/link'
-// import ThemeSelector from './ThemeSelector'
-// import LanguageSelector from './LanguageSelector'
-// import RunButton from './RunButton'
-// import HeaderProfileBtn from './HeaderProfileBtn'
+import { api } from '../../../../convex/_generated/api'
+import LanguageSelector from './LanguageSelector'
+import RunButton from './RunButton'
+import ThemeSelector from './ThemeSelector'
 
-async function Header() {
-  //   const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!)
-  //   const user = await currentUser()
+export default async function Header() {
+  const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!)
+  const user = await currentUser()
 
-  //   const convexUser = await convex.query(api.users.getUser, {
-  //     userId: user?.id || '',
-  //   })
+  const convexUser = await convex.query(api.users.getUser, {
+    userId: user?.id || '',
+  })
 
   return (
     <div className='relative z-10'>
@@ -70,20 +73,11 @@ async function Header() {
 
         <div className='flex items-center gap-4'>
           <div className='flex items-center gap-3'>
-            {/* <ThemeSelector /> */}
-            {/* <LanguageSelector hasAccess={Boolean(convexUser?.isPro)} /> */}
+            <ThemeSelector />
+            <LanguageSelector hasAccess={Boolean(convexUser?.isPro)} />
           </div>
 
-          <Link
-            href='/pricing'
-            className='flex items-center gap-2 px-4 py-1.5 rounded-lg border border-amber-500/20 hover:border-amber-500/40 bg-gradient-to-r from-amber-500/10
-                to-orange-500/10 hover:from-amber-500/20 hover:to-orange-500/20
-                transition-all duration-300'
-          >
-            <Sparkles className='w-4 h-4 text-amber-400 hover:text-amber-300' />
-            <span className='text-sm font-medium text-amber-400/90 hover:text-amber-300'>Pro</span>
-          </Link>
-          {/* {!convexUser?.isPro && (
+          {!convexUser?.isPro && (
             <Link
               href='/pricing'
               className='flex items-center gap-2 px-4 py-1.5 rounded-lg border border-amber-500/20 hover:border-amber-500/40 bg-gradient-to-r from-amber-500/10
@@ -95,11 +89,11 @@ async function Header() {
                 Pro
               </span>
             </Link>
-          )} */}
+          )}
 
-          {/* <SignedIn>
+          <SignedIn>
             <RunButton />
-          </SignedIn> */}
+          </SignedIn>
 
           <div className='pl-3 border-l border-gray-800'>{/* <HeaderProfileBtn /> */}</div>
         </div>
@@ -107,4 +101,3 @@ async function Header() {
     </div>
   )
 }
-export default Header
