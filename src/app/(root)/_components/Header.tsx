@@ -1,14 +1,15 @@
-import { SignedIn } from '@clerk/nextjs'
 import { currentUser } from '@clerk/nextjs/server'
 import { ConvexHttpClient } from 'convex/browser'
-import { Blocks, Code2, Sparkles } from 'lucide-react'
-import Link from 'next/link'
 import { api } from '../../../../convex/_generated/api'
+import Link from 'next/link'
+import { Blocks, Code2, Sparkles } from 'lucide-react'
+import { SignedIn } from '@clerk/nextjs'
+import ThemeSelector from './ThemeSelector'
 import LanguageSelector from './LanguageSelector'
 import RunButton from './RunButton'
-import ThemeSelector from './ThemeSelector'
+import HeaderProfileBtn from './HeaderProfileBtn'
 
-export default async function Header() {
+async function Header() {
   const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!)
   const user = await currentUser()
 
@@ -19,7 +20,7 @@ export default async function Header() {
   return (
     <div className='relative z-10'>
       <div
-        className='flex items-center lg:justify-between justify-center
+        className='flex items-center lg:justify-between justify-center 
         bg-[#0a0a0f]/80 backdrop-blur-xl p-6 mb-4 rounded-lg'
       >
         <div className='hidden lg:flex items-center gap-8'>
@@ -27,7 +28,7 @@ export default async function Header() {
             {/* Logo hover effect */}
 
             <div
-              className='absolute -inset-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-lg opacity-0
+              className='absolute -inset-2 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-lg opacity-0 
                 group-hover:opacity-100 transition-all duration-500 blur-xl'
             />
 
@@ -53,11 +54,11 @@ export default async function Header() {
           <nav className='flex items-center space-x-1'>
             <Link
               href='/snippets'
-              className='relative group flex items-center gap-2 px-4 py-1.5 rounded-lg text-gray-300 bg-gray-800/50
+              className='relative group flex items-center gap-2 px-4 py-1.5 rounded-lg text-gray-300 bg-gray-800/50 
                 hover:bg-blue-500/10 border border-gray-800 hover:border-blue-500/50 transition-all duration-300 shadow-lg overflow-hidden'
             >
               <div
-                className='absolute inset-0 bg-gradient-to-r from-blue-500/10
+                className='absolute inset-0 bg-gradient-to-r from-blue-500/10 
                 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity'
               />
               <Code2 className='w-4 h-4 relative z-10 group-hover:rotate-3 transition-transform' />
@@ -80,8 +81,8 @@ export default async function Header() {
           {!convexUser?.isPro && (
             <Link
               href='/pricing'
-              className='flex items-center gap-2 px-4 py-1.5 rounded-lg border border-amber-500/20 hover:border-amber-500/40 bg-gradient-to-r from-amber-500/10
-                to-orange-500/10 hover:from-amber-500/20 hover:to-orange-500/20
+              className='flex items-center gap-2 px-4 py-1.5 rounded-lg border border-amber-500/20 hover:border-amber-500/40 bg-gradient-to-r from-amber-500/10 
+                to-orange-500/10 hover:from-amber-500/20 hover:to-orange-500/20 
                 transition-all duration-300'
             >
               <Sparkles className='w-4 h-4 text-amber-400 hover:text-amber-300' />
@@ -95,9 +96,12 @@ export default async function Header() {
             <RunButton />
           </SignedIn>
 
-          <div className='pl-3 border-l border-gray-800'>{/* <HeaderProfileBtn /> */}</div>
+          <div className='pl-3 border-l border-gray-800'>
+            <HeaderProfileBtn />
+          </div>
         </div>
       </div>
     </div>
   )
 }
+export default Header

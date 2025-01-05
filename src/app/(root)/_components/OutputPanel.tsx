@@ -1,19 +1,19 @@
 'use client'
 
-// import { useCodeEditorStore } from '@/store/useCodeEditorStore'
-import { Terminal } from 'lucide-react'
+import { useCodeEditorStore } from '@/store/useCodeEditorStore'
+import { AlertTriangle, CheckCircle, Clock, Copy, Terminal } from 'lucide-react'
 import { useState } from 'react'
-// import RunningCodeSkeleton from './RunningCodeSkeleton'
+import RunningCodeSkeleton from './RunningCodeSkeleton'
 
 function OutputPanel() {
-  //   const { output, error, isRunning } = useCodeEditorStore()
+  const { output, error, isRunning } = useCodeEditorStore()
   const [isCopied, setIsCopied] = useState(false)
 
-  //   const hasContent = error || output
+  const hasContent = error || output
 
   const handleCopy = async () => {
-    // if (!hasContent) return
-    // await navigator.clipboard.writeText(error || output)
+    if (!hasContent) return
+    await navigator.clipboard.writeText(error || output)
     setIsCopied(true)
 
     setTimeout(() => setIsCopied(false), 2000)
@@ -30,10 +30,10 @@ function OutputPanel() {
           <span className='text-sm font-medium text-gray-300'>Output</span>
         </div>
 
-        {/* {hasContent && (
+        {hasContent && (
           <button
             onClick={handleCopy}
-            className='flex items-center gap-1.5 px-2.5 py-1.5 text-xs text-gray-400 hover:text-gray-300 bg-[#1e1e2e]
+            className='flex items-center gap-1.5 px-2.5 py-1.5 text-xs text-gray-400 hover:text-gray-300 bg-[#1e1e2e] 
             rounded-lg ring-1 ring-gray-800/50 hover:ring-gray-700/50 transition-all'
           >
             {isCopied ? (
@@ -48,16 +48,16 @@ function OutputPanel() {
               </>
             )}
           </button>
-        )} */}
+        )}
       </div>
 
       {/* Output Area */}
       <div className='relative'>
         <div
-          className='relative bg-[#1e1e2e]/50 backdrop-blur-sm border border-[#313244]
+          className='relative bg-[#1e1e2e]/50 backdrop-blur-sm border border-[#313244] 
         rounded-xl p-4 h-[600px] overflow-auto font-mono text-sm'
         >
-          {/* {isRunning ? (
+          {isRunning ? (
             <RunningCodeSkeleton />
           ) : error ? (
             <div className='flex items-start gap-3 text-red-400'>
@@ -82,7 +82,7 @@ function OutputPanel() {
               </div>
               <p className='text-center'>Run your code to see the output here...</p>
             </div>
-          )} */}
+          )}
         </div>
       </div>
     </div>

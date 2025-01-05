@@ -1,47 +1,47 @@
 'use client'
-// import { useCodeEditorStore } from "@/store/useCodeEditorStore";
-import { useState } from 'react'
-// import { defineMonacoThemes, LANGUAGE_CONFIG } from "../_constants";
+import useMounted from '@/hooks/useMounted'
+import { useCodeEditorStore } from '@/store/useCodeEditorStore'
 import { useClerk } from '@clerk/nextjs'
-import { Editor } from '@monaco-editor/react'
+import Editor from '@monaco-editor/react'
 import { motion } from 'framer-motion'
 import { RotateCcwIcon, ShareIcon, TypeIcon } from 'lucide-react'
-// import { EditorPanelSkeleton } from "./EditorPanelSkeleton";
-import useMounted from '@/hooks/useMounted'
-// import ShareSnippetDialog from "./ShareSnippetDialog";
-
+import Image from 'next/image'
+import { useEffect, useState } from 'react'
+import { defineMonacoThemes, LANGUAGE_CONFIG } from '../_constants'
+import { EditorPanelSkeleton } from './EditorPanelSkeleton'
+import ShareSnippetDialog from './ShareSnippetDialog'
 function EditorPanel() {
   const clerk = useClerk()
   const [isShareDialogOpen, setIsShareDialogOpen] = useState(false)
-  //   const { language, theme, fontSize, editor, setFontSize, setEditor } = useCodeEditorStore();
+  const { language, theme, fontSize, editor, setFontSize, setEditor } = useCodeEditorStore((s) => s)
 
   const mounted = useMounted()
 
-  //   useEffect(() => {
-  //     const savedCode = localStorage.getItem(`editor-code-${language}`);
-  //     const newCode = savedCode || LANGUAGE_CONFIG[language].defaultCode;
-  //     if (editor) editor.setValue(newCode);
-  //   }, [language, editor]);
+  useEffect(() => {
+    const savedCode = localStorage.getItem(`editor-code-${language}`)
+    const newCode = savedCode || LANGUAGE_CONFIG[language].defaultCode
+    if (editor) editor.setValue(newCode)
+  }, [language, editor])
 
-  //   useEffect(() => {
-  //     const savedFontSize = localStorage.getItem("editor-font-size");
-  //     if (savedFontSize) setFontSize(parseInt(savedFontSize));
-  //   }, [setFontSize]);
+  useEffect(() => {
+    const savedFontSize = localStorage.getItem('editor-font-size')
+    if (savedFontSize) setFontSize(parseInt(savedFontSize))
+  }, [setFontSize])
 
   const handleRefresh = () => {
-    // const defaultCode = LANGUAGE_CONFIG[language].defaultCode;
-    // if (editor) editor.setValue(defaultCode);
-    // localStorage.removeItem(`editor-code-${language}`);
+    const defaultCode = LANGUAGE_CONFIG[language].defaultCode
+    if (editor) editor.setValue(defaultCode)
+    localStorage.removeItem(`editor-code-${language}`)
   }
 
   const handleEditorChange = (value: string | undefined) => {
-    // if (value) localStorage.setItem(`editor-code-${language}`, value);
+    if (value) localStorage.setItem(`editor-code-${language}`, value)
   }
 
   const handleFontSizeChange = (newSize: number) => {
-    // const size = Math.min(Math.max(newSize, 12), 24);
-    // setFontSize(size);
-    // localStorage.setItem("editor-font-size", size.toString());
+    const size = Math.min(Math.max(newSize, 12), 24)
+    setFontSize(size)
+    localStorage.setItem('editor-font-size', size.toString())
   }
 
   if (!mounted) return null
@@ -53,7 +53,7 @@ function EditorPanel() {
         <div className='flex items-center justify-between mb-4'>
           <div className='flex items-center gap-3'>
             <div className='flex items-center justify-center w-8 h-8 rounded-lg bg-[#1e1e2e] ring-1 ring-white/5'>
-              {/* <Image src={"/" + language + ".png"} alt="Logo" width={24} height={24} /> */}
+              <Image src={'/' + language + '.png'} alt='Logo' width={24} height={24} />
             </div>
             <div>
               <h2 className='text-sm font-medium text-white'>Code Editor</h2>
@@ -69,12 +69,12 @@ function EditorPanel() {
                   type='range'
                   min='12'
                   max='24'
-                  //   value={fontSize}
+                  value={fontSize}
                   onChange={(e) => handleFontSizeChange(parseInt(e.target.value))}
                   className='w-20 h-1 bg-gray-600 rounded-lg cursor-pointer'
                 />
                 <span className='text-sm font-medium text-gray-400 min-w-[2rem] text-center'>
-                  {/* {fontSize} */}
+                  {fontSize}
                 </span>
               </div>
             </div>
@@ -108,14 +108,14 @@ function EditorPanel() {
           {clerk.loaded && (
             <Editor
               height='600px'
-              //   language={LANGUAGE_CONFIG[language].monacoLanguage}
+              language={LANGUAGE_CONFIG[language].monacoLanguage}
               onChange={handleEditorChange}
-              //   theme={theme}
-              //   beforeMount={defineMonacoThemes}
-              //   onMount={(editor) => setEditor(editor)}
+              theme={theme}
+              beforeMount={defineMonacoThemes}
+              onMount={(editor) => setEditor(editor)}
               options={{
                 minimap: { enabled: false },
-                // fontSize,
+                fontSize,
                 automaticLayout: true,
                 scrollBeyondLastLine: false,
                 padding: { top: 16, bottom: 16 },
@@ -137,10 +137,10 @@ function EditorPanel() {
             />
           )}
 
-          {/* {!clerk.loaded && <EditorPanelSkeleton />} */}
+          {!clerk.loaded && <EditorPanelSkeleton />}
         </div>
       </div>
-      {/* {isShareDialogOpen && <ShareSnippetDialog onClose={() => setIsShareDialogOpen(false)} />} */}
+      {isShareDialogOpen && <ShareSnippetDialog onClose={() => setIsShareDialogOpen(false)} />}
     </div>
   )
 }
